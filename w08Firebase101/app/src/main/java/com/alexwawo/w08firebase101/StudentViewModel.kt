@@ -54,5 +54,24 @@ class StudentViewModel : ViewModel() {
                 Log.w("Firestore", "Error getting documents.", exception)
             }
     }
+
+    fun updateStudent(student: Student) {
+        val data = mapOf(
+            "id" to student.id,
+            "name" to student.name,
+            "program" to student.program
+        )
+        db.collection("students").document(student.docId)
+            .set(data)
+            .addOnSuccessListener { fetchStudents() }
+            .addOnFailureListener { e -> Log.w("Firestore", "Error updating document", e) }
+    }
+
+    fun deleteStudent(student: Student) {
+        db.collection("student").document(student.docId)
+            .delete()
+            .addOnSuccessListener { fetchStudents() }
+            .addOnFailureListener { e-> Log.w("Firestore", "Error deleting document", e) }
+    }
 }
 
